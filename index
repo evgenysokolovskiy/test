@@ -98,7 +98,7 @@ function func(s, a, b) {
 
     // Или так (вопрос в том, что производительней)
     // Думаю, что конструктор Math медленней
-    //if (!s.includes(a || b)) return -1
+    //if (!s.includes(a && b)) return -1
     // return Math.max(s.lastIndexOf(a), s.lastIndexOf(b))
 }
 
