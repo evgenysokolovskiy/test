@@ -1,0 +1,136 @@
+/*
+Fizz-buzz задачи
+Задача №1
+Написать функцию dscount, которая подсчитывает количество идущих подряд символов s1 и s2 в строке, 
+без учёта регистра. Функция должна пройти следующие тесты, как минимум:
+
+*/
+
+// Возможно, решение без использования RegExp более производительное
+function dscount(str, s1, s2) {
+    let count = 0
+    let prev = str[0].toLowerCase()
+
+    for (let i = 1; i < str.length; i++) {
+        const s = str[i].toLowerCase()
+
+        if (prev === s1 && s === s2) count++
+        prev = s
+    }
+
+    return count
+}
+
+// Тесты
+try {
+    test(dscount, 'ab___ab__', 'a', 'b', 2)
+    test(dscount, '___cd____', 'c', 'd', 1)
+    test(dscount, 'de_______', 'd', 'e', 1)
+    test(dscount, '12_12__12', '1', '2', 3)
+    test(dscount, '_ba______', 'a', 'b', 0)
+    test(dscount, '_a__b____', 'a', 'b', 0)
+    test(dscount, '-ab-аb-ab', 'a', 'b', 2)
+    test(dscount, 'aAa', 'a', 'a', 2)
+
+    console.info('Congratulations! All tests passed.')
+} catch (e) {
+    console.error(e)
+}
+
+// Функция тестирования
+function test(call, str, s1, s2, count) {
+    if (call(str, s1, s2) !== count) {
+        throw 'Test failed!'
+    }
+}
+
+/*
+Алгоритмы
+Задача №1
+
+Чтобы пожарить 3 блинчика, необходимо 3 минуты.
+Первая итеррация - первая сторона у 1 и 2 блинчиков
+Вторая итеррация - вторая сторона у 1 и первая сторона у 2
+Третья итеррация - вторая сторона у 2 и 3
+
+Как я понял задачу, нужно написать функцию, в аргумент передавать
+количество блинчиков. Возвращать из функции количество минут (итерраций),
+затраченных на приготовление.
+Если не ошибаюсь, количество минут всегда будет равняться аргументу
+Не понял, что конкретно нужно описать
+Пример использования функционального подхода (хотя здесь не имеет смысла)
+Функциональный подход:
+- Функции должны быть чистыми (не вносить изменения в глобальную область видимости)
+- Принимать аргумент(ы) и возвращать значение
+*/
+
+function getCountMinutes(count) {
+    return count % 2 === 0
+        ? getCountMultiple2(count)
+        : count % 3 === 0
+        ? getCountMultiple3(count)
+        : null
+}
+
+// Значение кратно 2
+function getCountMultiple2(count) {
+    return count
+}
+
+// Значение кратно 3
+function getCountMultiple3(count) {
+    return count
+}
+
+console.log(`На приготовление требуется ${getCountMinutes(3)} минут(ы)`)
+
+/*
+Рефакторинг
+Задача №1
+*/
+
+// Как я понял, цель функции получить индекс последнего вхождения
+function func(s, a, b) {
+    if (!s.includes(a && b)) return -1
+    const aIndex = s.lastIndexOf(a)
+    const bIndex = s.lastIndexOf(b)
+    return aIndex > bIndex ? aIndex : bIndex
+
+    // Или так (вопрос в том, что производительней)
+    // Думаю, что конструктор Math медленней
+    //if (!s.includes(a || b)) return -1
+    // return Math.max(s.lastIndexOf(a), s.lastIndexOf(b))
+}
+
+console.log(func('123hf', 'a', 'b'))
+
+// Задача №2
+
+const drawRating = (vote) => Math.ceil((vote + 0.00001) / 20)
+
+// Проверка работы результата
+console.log(drawRating(0)) // ★☆☆☆☆
+console.log(drawRating(1)) // ★☆☆☆☆
+console.log(drawRating(50)) // ★★★☆☆
+console.log(drawRating(99)) // ★★★★★
+
+/*
+
+Практические задачи
+Задача №1
+
+*/
+
+const parseUrl = (string) => new URL(string)
+
+let a = parseUrl('http://tutu.ru:8080/do/any.php?a=1&b[]=a&b[]=b#foo')
+
+// Вернет объект, в котором будут следующие свойства:
+console.log(a.href == 'http://tutu.ru:8080/do/any.php?a=1&b[]=a&b[]=b#foo')
+console.log(a.hash == '#foo')
+console.log(a.port == '8080')
+console.log(a.host == 'tutu.ru:8080')
+console.log(a.protocol == 'http:')
+console.log(a.hostname == 'tutu.ru')
+console.log(a.pathname == '/do/any.php')
+console.log(a.origin == 'http://tutu.ru:8080')
